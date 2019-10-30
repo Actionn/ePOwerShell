@@ -1,4 +1,4 @@
-function Set-ePOPolicy {
+function Set-ePOComputerPolicy {
     [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "Medium", DefaultParameterSetName = 'Computer')]
     [Alias('Set-ePOwerShellPolicy')]
     param (
@@ -14,7 +14,7 @@ function Set-ePOPolicy {
     begin {
         try {
             $Request = @{
-                Name  = 'policy.AssignToSystem'
+                Name  = 'policy.assignToSystem'
                 Query = @{
                     ids         = ''
                     productId   = ''
@@ -78,6 +78,7 @@ function Set-ePOPolicy {
                             
 
                             if ($PSCmdlet.ShouldProcess("Set ePO policy on $($Comp.ComputerName) to $($Policy.ObjectName)")) {
+                                Write-Debug "Request: $($Request | ConvertTo-Json)"
                                 $Result = Invoke-ePORequest @Request
 
                                 if ($Result -eq 0) {
@@ -85,7 +86,7 @@ function Set-ePOPolicy {
                                 } elseif ($Result -eq 1) {
                                     Write-Verbose ('Successfully set policy [{0}] on computer {1}' -f $Policy.ObjectName, $Comp.ComputerName)
                                 } else {
-                                    Write-Error ('Unknown response while setting policy [{0}] from {1}: {2}' -f $Policy.ObjectName, $Comp.ComputerName, $Result) -ErrorAction Stop
+                                    Write-Verbose ('Result: {0}' -f $Result)
                                 }
                             }
                         }
@@ -102,4 +103,4 @@ function Set-ePOPolicy {
     end {}
 }
 
-Export-ModuleMember -Function 'Set-ePOPolicy' -Alias 'Set-ePOwerShellPolicy'
+Export-ModuleMember -Function 'Set-ePOComputerPolicy' -Alias 'Set-ePOwerShellComputerPolicy'
