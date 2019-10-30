@@ -1,30 +1,25 @@
-<#
-    .SYNOPSIS
-        Set policies of ePO Computer
-#>
-function Set-ePOComputerPolicy {
-    [CmdletBinding(DefaultParameterSetName = 'All')]
-    [OutputType([System.Object[]])]
+function Set-ePOPolicy {
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "Medium", DefaultParameterSetName = 'Computer')]
+    [Alias('Set-ePOwerShellPolicy')]
     param (
-        [Parameter(ParameterSetName = 'ComputerName', Position = 1, ValueFromPipeline = $True)]
-        [Alias('hostname', 'name', 'computername')]
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True, ParameterSetName = 'Computer')]
+        [Alias('ComputerName', 'cn')]
         $Computer,
-        [Parameter(ParameterSetName = 'HIPSPolicy',  ValueFromPipeline = $False)]
-        $HIPSPolicy,
-        [Parameter(ParameterSetName = 'VSEPolicy',  ValueFromPipeline = $False)]
-        $VSEPolicy,
-        [Parameter(ParameterSetName = 'All')]
-        [Switch]
-        $All
+
+        [Parameter(Mandatory = $True, Position = 1, ValueFromPipeline = $True)]
+        [Alias('Policy')]
+        $PolicyName
     )
 
     begin {
         try {
-            #This will grab our productId, typeId, and objectId
-            $policyFindRequest = @{
-                Name  = 'policy.find'
+            $Request = @{
+                Name  = 'policy.AssignToSystem'
                 Query = @{
-                    searchText = ''
+                    ids         = ''
+                    productId   = ''
+                    typeId      = ''
+                    objectId    = ''
                 }
             }
         } catch {
@@ -36,66 +31,75 @@ function Set-ePOComputerPolicy {
     process {
         try {
             switch ($PSCmdlet.ParameterSetName) {
-                "HIPSPolicy" {
-                    Write-Debug ("Searching for HIPS Policy: {0]" -f $HIPSPolicy)
-                    $policyFindRequest.Query.searchText = $HIPSPolicy
-                    $HIPSPolicies = Invoke-epoRequest @policyFindRequest
-                }
-                "ComputerName" {
-                    foreach ($Comp in $Computer) {
-                        Write-Debug ('Searching by computer name for: {0}' -f $Comp)
-                        #this [ePOComputer] section I believe is checking the object type, like at the top of a gm output
-                        if ($Comp -is [ePOComputer]) {
-                            Write-Verbose 'Using ePOComputer object'
-                            Write-Output $Comp
-                        } else {
-                            if ($ForceWildcardHandling) {
-                                if (-not ($script:AllePOComputers)) {
-                                    $Request.Query.searchText = ''
-                                    $script:AllePOComputers = Invoke-ePORequest @Request
-                                }
+                'Computer' {
+                    :Computer foreach ($Comp in $Computer) {
+                        :Policy foreach ($Policy in $PolicyName) {
+                            if ($Comp -is [ePOPolicy] -and $Policy -is [ePOComputer]) {
+                                Write-Verbose 'Computer and tag objects are mismatched. Swapping...'
+                                $Comp, $Policy = $Policy, $Comp
+                            }
 
-                                foreach ($ePOComputer in $script:AllePOComputers) {
-                                    if ($ePOComputer.'EPOComputerProperties.ComputerName' -like $Comp) {
-                                        $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
-                                        Write-Output $ePOComputerObject
-                                    }
+                            if ($Comp -is [ePOComputer]) {
+                                $Request.Query.ids = $Comp.ParentID
+                            } elseif ($Comp -is [String]) {
+                                if (-not ($Comp = Get-ePOComputer -Computer $Comp)) {
+                                    Write-Error ('Failed to find a computer with provided name: {0}' -f $Comp)
+                                    continue Computer
                                 }
+                                $Request.Query.ids = $Comp.ParentID
                             } else {
-                                $Request.Query.searchText = $Comp
-                                $ePOComputers = Invoke-ePORequest @Request
+                                Write-Error 'Failed to interpret computer'
+                                continue Computer
+                            }
 
-                                foreach ($ePOComputer in $ePOComputers) {
-                                    if ($ePOComputer.'EPOComputerProperties.ComputerName' -eq $Comp) {
-                                        $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
-                                        Write-Output $ePOComputerObject
-                                    }
+                            if ($Policy -is [ePOPolicy]) {
+                                $Request.Query.productId = $Policy.ProductID
+                                $Request.Query.typeId = $Policy.TypeID
+                                $Request.Query.objectId = $Policy.ObjectID
+                            } elseif ($Policy -is [String]) {
+                                if (-not ($Policy = Get-ePOPolicy -Policy $Policy)) {
+                                    Write-Error ('Failed to find a Policy with provided name: {0}' -f $Policy)
+                                    continue Policy
+                                }
+                                $Request.Query.productId = $Policy.ProductID
+                                $Request.Query.typeId = $Policy.TypeID
+                                $Request.Query.objectId = $Policy.ObjectID
+                            } else {
+                                Write-Error 'Failed to interpret policy'
+                                continue Policy
+                            }
+
+                            Write-Verbose ('Computer Name: {0}' -f $Comp.ComputerName)
+                            Write-Verbose ('Computer ID: {0}' -f $Comp.ParentID)
+                            Write-Verbose ('Tag ProductID: {0}' -f $Policy.ProductID)
+                            Write-Verbose ('Tag TypeID: {0}' -f $Policy.TypeID)
+                            Write-Verbose ('Tag ObjectID: {0}' -f $Policy.ObjectID)
+                            Write-Verbose ('Tag ObjectName: {0}' -f $Policy.ObjectName)
+                            
+
+                            if ($PSCmdlet.ShouldProcess("Set ePO policy on $($Comp.ComputerName) to $($Policy.ObjectName)")) {
+                                $Result = Invoke-ePORequest @Request
+
+                                if ($Result -eq 0) {
+                                    Write-Verbose ('Policy [{0}] is already set on computer {1}' -f $Policy.ObjectName, $Comp.ComputerName)
+                                } elseif ($Result -eq 1) {
+                                    Write-Verbose ('Successfully set policy [{0}] on computer {1}' -f $Policy.ObjectName, $Comp.ComputerName)
+                                } else {
+                                    Write-Error ('Unknown response while setting policy [{0}] from {1}: {2}' -f $Policy.ObjectName, $Comp.ComputerName, $Result) -ErrorAction Stop
                                 }
                             }
                         }
                     }
                 }
 
-                "All" {
-                    $Request.Query.searchText = ''
-                    $ePOComputers = Invoke-ePORequest @Request
-
-                    foreach ($ePOComputer in $ePOComputers) {
-                        $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
-                        Write-Output $ePOComputerObject
-                    }
-                }
             }
         } catch {
             Write-Information $_ -Tags Exception
+            Throw $_
         }
     }
 
-    end {
-        if (Get-Variable 'AllePOComputers' -Scope Script -ErrorAction SilentlyContinue) {
-            Remove-Variable -Name 'AllePOComputers' -Scope Script
-        }
-    }
+    end {}
 }
 
-Export-ModuleMember -Function 'Get-ePOComputer' -Alias 'Find-ePOwerShellComputerSystem', 'Find-ePOComputerSystem'
+Export-ModuleMember -Function 'Set-ePOPolicy' -Alias 'Set-ePOwerShellPolicy'
