@@ -29,9 +29,9 @@ function Get-ePOPolicy {
 
                 foreach ($ePOPolicy in $ePOPolicies) {
                     if (-not ($Policy) -or ($Policy -eq $ePOPolicy.objectName)) {
-                        $PolicyObject = [ePOPolicy]::new($ePOPolicy.featureId, $ePOPolicy.featureName, $ePOPolicy.objectId, $ePOPolicy.objectName, 
+                        #These are case sensitive, need to match the fields in json output from invoke-webrequest
+                        $PolicyObject = [ePOPolicy]::new($ePOPolicy.featureId, $ePOPolicy.featureName, $ePOPolicy.objectId, $ePOPolicy.objectName,
                         $ePOPolicy.objectNotes, $ePOPolicy.productId, $ePOPolicy.productName, $ePOPolicy.typeId, $ePOPolicy.typeName)
-                        Write-Verbose "I'm literally about to write out the POLICY object" -Verbose
                         Write-Output $PolicyObject
                     }
                 }
