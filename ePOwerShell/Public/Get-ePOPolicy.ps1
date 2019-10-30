@@ -1,6 +1,3 @@
-<#
-#>
-
 function Get-ePOPolicy {
     [CmdletBinding()]
     [Alias('Find-ePOwerShellPolicy','Find-ePOPolicy')]
@@ -31,9 +28,10 @@ function Get-ePOPolicy {
                 $ePOPolicies = Invoke-ePORequest @Request
 
                 foreach ($ePOPolicy in $ePOPolicies) {
-                    if (-not ($Policy) -or ($Policy -eq $ePOPolicy.policyName)) {
-                        $PolicyObject = [ePOPolicy]::new($ePOPolicy.FeatureID, $ePOPolicy.FeatureName, $ePOPolicy.ObjectID, $ePOPolicy.ObjectName, `
-                        $ePOPolicy.ObjectNotes, $ePOPolicy.ProductID, $ePOPolicy.ProductName, $ePOPolicy.TypeID, $ePOPolicy.TypeName )
+                    if (-not ($Policy) -or ($Policy -eq $ePOPolicy.objectName)) {
+                        $PolicyObject = [ePOPolicy]::new($ePOPolicy.featureId, $ePOPolicy.featureName, $ePOPolicy.objectId, $ePOPolicy.objectName, 
+                        $ePOPolicy.objectNotes, $ePOPolicy.productId, $ePOPolicy.productName, $ePOPolicy.typeId, $ePOPolicy.typeName)
+                        Write-Verbose "I'm literally about to write out the POLICY object" -Verbose
                         Write-Output $PolicyObject
                     }
                 }
