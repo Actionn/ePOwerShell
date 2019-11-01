@@ -1,0 +1,198 @@
+OK:
+ComputerMgmt.createAgentDeploymentUrlCmd deployPath groupId urlName
+agentVersionNumber agentHotFix [edit] [ahId] [fallBackAhId] - Create Agent
+Deployment URL Command
+ComputerMgmt.createCustomInstallPackageCmd deployPath [ahId] [fallBackAhId] -
+Create Custom Install Package Command
+ComputerMgmt.createDefaultAgentDeploymentUrlCmd tenantId - Create Default
+Non-Editable Agent Deployment URL Command
+ComputerMgmt.createTagGroup parentTagGroupId newTagGroupName - Create a new
+subgroup under an existing tag group.
+ComputerMgmt.deleteTag tagIds [forceDelete] - Delete one or more tags.
+ComputerMgmt.deleteTagGroup tagGroupIds [deleteTags] - Delete one or more Tag
+Groups.
+ComputerMgmt.listAllTagGroups - List All Tag Groups in Tag Group Tree
+ComputerMgmt.moveTagsToTagGroup tagIds tagGroupId - Move tags to an existing tag
+group.
+ComputerMgmt.renameTagGroup tagGroupId renameTagGroupName - Rename a tag group.
+ENDP_FW_META.propertyTranslator  - Translates client rule properties and
+populates appropriate database tables with this data.
+ENDP_MIG_META.automigrator  - ENDP_MIG_META.automigrator.help.oneline
+PhengineMeta.ReScanNowCommand Immediately run all active scans on specified systems or tags. This might impose a big load on the systems and the network.
+PhengineMeta.ScanNowCommand Immediately run assessment on systems or tags. This might impose a big load on the systems and the network.
+RepositoryMgmt.createHttpRepository name url uncPath downloadUser
+downloadPassword uploadUser uploadPassword [softwareInclusionList]
+[softwareExclusionList] - Remote command to create HTTP distributed repository.
+RepositoryMgmt.createUncRepository name uncPath downloadUser downloadPassword
+uploadUser uploadPassword [softwareInclusionList] [softwareExclusionList] -
+Remote command to create UNC distributed repository.
+agentmgmt.listAgentHandlers - List all Agent Handlers
+clienttask.export [productId] [fileName] - Exports client tasks
+clienttask.find [searchText] - Finds client tasks
+clienttask.importClientTask importFileName - Imports client tasks from an XML
+file.
+clienttask.run names productId taskId [retryAttempts] [retryIntervalInSeconds]
+[abortAfterMinutes] [useAllAgentHandlers] [stopAfterMinutes] [randomMinutes] -
+Runs the client task on a supplied list of systems
+clienttask.syncShared - Shares client tasks with participating registered
+servers
+commonevent.purgeEvents queryId [unit] [purgeType] - Deletes threat events based
+on age or a queryId. The query must be table based.
+commonevent.purgeProductEvents queryId [unit] [purgeType] - Purge Client Events
+by Query ID or age.
+console.cert.updatecrl console.updateCRL crlFile - cert.update.crl.help.oneline
+core.addPermSetsForUser userName permSetName - Adds permission set(s) to
+specified user
+core.addUser userName password [fullName=<>] [email=<>] [phoneNumber=<>]
+[notes=<>] [allowedIPs=<>] [disabled=<>] [admin=<>] [retryTolerant=<>] - Adds a
+user to the system
+core.executeQuery queryId [database=<>] - Executes a SQUID query and returns the
+results
+core.exportPermissionSets - Exports all permission sets.
+core.help [command] [prefix=<>] - Displays a list of all commands and help
+strings.
+core.importPermissionSets file [overwrite] - Imports permission sets.
+core.listDatabases - Displays all registered databases that the user is
+permitted to see.
+core.listDatatypes [type] - Displays all registered datatypes and operations for
+those types that the user is permitted to see.
+core.listPermSets [userName] - List permission sets in the system
+core.listQueries - Displays all queries that the user is permitted to see.
+core.listTables [table] - Displays all SQUID tables that the user is permitted
+to see.
+core.listUsers [permSetName] - List users in the system
+core.purgeAuditLog [age] [unit] - Purge the Audit Log by age
+core.removePermSetsForUser userName permSetName - Removes permission set(s) from
+a specified user
+core.removeUser userName - Removes a user from the system
+core.updateUser userName [password=<>] [windowsUserName=<>] [windowsDomain=<>]
+[subjectDN=<>] [newUserName=<>] [fullName=<>] [email=<>] [phoneNumber=<>]
+[allowedIPs=<>] [notes=<>] [disabled=<>] [admin=<>] - Updates an existing user
+detectedsystem.add sourceID sourceType MAC IPAddress [IPSubnet] [IPSubnetMask]
+[dnsName] [OSPlatform] [OSFamily] [OSVersion] [domain] [netbiosName]
+[netbiosComment] [users] [agentGUID] [detectedTime] [externalID] - Adds a
+Detected System.
+detectedsystem.addToTree UIDs branchNodeID [allowDuplicates] [dirSort] - Add
+detected systems to the System Tree
+detectedsystem.delete UIDs - Deletes Detected Systems
+detectedsystem.deleteByAge age unit - Deletes all Detected Systems older than a
+given age
+detectedsystem.find searchText - Find Detected Systems
+detectedsystem.markAsException [UIDs] [unmark] [category] - Adds Detected
+Systems to the exceptions list
+epo.getVersion - Gets the ePO version
+epo.purgeComplianceHistory queryId [unit] - Purges compliance events by query or
+age
+epo.syncDirectory [syncPointList] - Synchronizes Domains/AD
+epogroup.findSystems groupId [searchSubgroups] - Find computers within a given
+group in the ePO tree
+issue.createIssue name=<> desc=<> [type=<>] [state=<>] [priority=<>]
+[severity=<>] [resolution=<>] [due=<>] [assigneeName=<>] [ticketServerName=<>]
+[ticketId=<>] [properties=<>] - Creates an issue
+issue.deleteIssue id=<> - Deletes issues
+issue.listIssues [id=<>] - Lists issues
+issue.updateIssue id=<> [name=<>] [desc=<>] [state=<>] [priority=<>]
+[severity=<>] [resolution=<>] [due=<>] [assigneeName=<>] [ticketServerName=<>]
+[ticketId=<>] [properties=<>] - Updates an issue
+ldap.populateCache [rsName] - Rediscovers and populates Registered Servers
+mappings with domains
+policy.assignToGroup groupId productId objectId [resetInheritance] - Assigns
+policy to the specified group
+policy.assignToSystem names productId typeId objectId [resetInheritance] -
+Assigns the policy to a supplied list of systems
+policy.export productId [fileName] - Exports policies
+policy.find [searchText] - Finds all policies the user is permitted to see that
+match the given search text.
+policy.importPolicy file [force] - Imports policies
+policy.syncShared - Shares policies with participating registered servers
+repository.changeBranch productId packageType sourceBranch targetBranch [move] -
+Change the Branch for a Package
+repository.checkInPackage packageLocation branch [option] [force] - Checks
+package into the Master Repository
+repository.deletePackage productId packageType branch - Deletes Package from the
+Master Repository
+repository.export [fileName] - Exports repositories
+repository.find [searchText] - Finds all repositories the user is permitted to
+see that match the given search text.
+repository.findPackages [searchText] - Finds Packages
+repository.importRepositories file repositoryType [overwrite] - Imports
+repositories
+repository.pull sourceRepository targetBranch moveToPrevious productList - Pulls
+packages from the source repository and puts them into the Master Repository
+repository.replicate [repositoryList] [incremental] - Replicate
+rsd.updateOUIs [ouiURL=<>] [ouiFileName=<>] -
+command.rsd.updateOUIs.desc.short-desc
+rsd.updateOs - command.rsd.updateOs.desc.short-desc
+scheduler.cancelServerTask taskLogId - Ends a currently running task
+scheduler.getServerTask taskName - Gets details about a specific server task
+scheduler.listAllServerTasks - Displays all server tasks
+scheduler.listRunningServerTasks - Get the list of all running server tasks.
+scheduler.runServerTask taskName - Runs a server task and returns the task log
+ID.
+scheduler.updateServerTask taskName [status] - Enables or disables a server task
+(by default status='enabled')
+scor.contentUpdate.command - Applies the most-recent update package for
+Application Control and Change Control products.
+scor.internal.config.parameters configPropertyName configPropertyValue - Update
+the config property parameters.
+scor.inventory.import systemUID file - Imports the contents of inventory from
+the specified XML file to the specified system UID on McAfee ePO console.
+scor.rulegroup.export ruleGroupOS ruleGroupType [ruleGroupName] [exportFileName]
+- Exports contents of the rule groups matching the specified criteria, such as
+operating system, type, and name.
+scor.rulegroup.find ruleGroupOS ruleGroupType [ruleGroupName] - Fetches all the
+rule groups that match the specified criteria, such as operating system, type,
+and name.
+scor.rulegroup.import file [override] - Imports the contents of rule groups from
+the specified XML file to the McAfee ePO console.
+scor.rulegroup.rename ruleGroupOS ruleGroupType oldRuleGroupName
+newRuleGroupName - Rename the rule group that match the specified criteria, such
+as operating system, type, and name.
+scor.updateWindowCommand action [systemIds] [systemNames] [workflowId] [time]
+[wakeupAgent] [taskIds] - Assign begin update, end update client tasks on given
+systems, delete the client tasks of type end update or begin update.
+system.addToSensorBlacklist UIDs - Adds managed systems to the Rogue System
+Sensor blacklist
+system.applyTag names tagName - Assigns the given tag to a supplied list of
+systems
+system.clearTag names tagName [all] - Clears the tag from supplied systems
+system.delete names [uninstall] [uninstallSoftware] - Deletes systems from the
+System Tree by name or ID.
+system.deployAgent names username [password] [agentPackage] [skipIfInstalled]
+[suppressUI] [forceInstall] [installPath] [domain] [useAllHandlers]
+[primaryAgentHandler] [retryIntervalSeconds] [attempts] [abortAfterMinutes]
+[includeSubgroups] [useSsh] [inputSource] - Deploys an agent to the given list
+of systems
+system.excludeTag names tagName - Excludes the tag from supplied systems
+system.exportTag [fileName] - Export Tags
+system.find searchText [searchNameOnly] - Finds systems in the System Tree
+system.findGroups [searchText] - Finds groups in the System Tree
+system.findTag [searchText] - Find Tags
+system.importSystem names branchNodeID [allowDuplicates] [uninstallRemoved]
+[pushAgent] [pushAgentForceInstall] [pushAgentSkipIfInstalled]
+[pushAgentSuppressUI] [pushAgentInstallPath] [pushAgentPackagePath]
+[pushAgentDomainName] [pushAgentUserName] [pushAgentPassword] [deleteIfRemoved]
+[flattenTreeStructure] - Imports systems
+system.importTag uploadFile [force] - Imports Tags
+system.move names parentGroupId [autoSort] - Moves systems to the specified
+destination group.
+system.resort names - Resorts the systems in the System Tree
+system.runTagCriteria tagID [resetTaggedSystems] - The Run Tag Criteria action
+evaluates every managed system against the tags criteria.
+system.setUserProperties names [description] [customField1] [customField2]
+[customField3] [customField4] - Sets user properties on the given system
+system.transfer names epoServer - Transfers systems to a different ePO server
+system.wakeupAgent names [fullProps] [superAgent] [randomMinutes]
+[forceFullPolicyUpdate] [useAllHandlers] [retryIntervalSeconds] [attempts]
+[abortAfterMinutes] [includeSubgroups] - Wakes up the agent on a supplied list
+of systems
+tasklog.listMessages taskLogId - Lists the messages for the specified task log
+entry
+tasklog.listSubtasks taskLogId - Lists subtasks of a specified task log entry
+tasklog.listTaskHistory [taskName] [taskSource] [maxRows] [age] [unit] - Lists
+task log entries, optionally filtered by task name, task ID, or task source
+tasklog.listTaskSources - Lists the task sources
+tasklog.purge [age] [unit] - Purges the Server Task Log beyond a given age and
+time unit
+
+
