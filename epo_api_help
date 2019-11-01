@@ -1,4 +1,3 @@
-```less
 OK:
 ComputerMgmt.createAgentDeploymentUrlCmd deployPath groupId urlName
 agentVersionNumber agentHotFix [edit] [ahId] [fallBackAhId] - Create Agent
@@ -195,6 +194,3 @@ task log entries, optionally filtered by task name, task ID, or task source
 tasklog.listTaskSources - Lists the task sources
 tasklog.purge [age] [unit] - Purges the Server Task Log beyond a given age and
 time unit
-
-
-```
